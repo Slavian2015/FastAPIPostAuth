@@ -1,3 +1,5 @@
+import os
+from pathlib import Path
 from smtplib import SMTP
 from typing import Generator
 from typing import Callable
@@ -17,7 +19,8 @@ from src.services.container import Security
 
 
 def database_engine(dsn: str) -> Generator:
-    engine = create_engine(dsn)
+    db_url = 'sqlite:///' + os.path.join(Path(__file__).parent.parent, dsn)
+    engine = create_engine(db_url)
     yield engine
     engine.dispose()
 
@@ -32,7 +35,7 @@ def authorized_smtp_client(host: str, port: int, user: str, password: str) -> Ge
 
 class AppContainer(DeclarativeContainer):
     config = providers.Configuration()
-    sqlalchemy_engine = providers.Resource(database_engine, dsn=config.postgres_dsn)
+    sqlalchemy_engine = providers.Resource(database_engine, dsn=config.sqlite_dsn)
     maker: providers.Singleton = providers.Singleton(sessionmaker, bind=sqlalchemy_engine)
     scoped_session_provider: providers.Singleton[scoped_session] = providers.Singleton(
         scoped_session, session_factory=maker)
@@ -40,11 +43,7 @@ class AppContainer(DeclarativeContainer):
 
     security_context: CryptContext = providers.Factory(CryptContext, schemes=['argon2'])
     repositories = providers.Container(RepositoriesContainer, sqlalchemy_session=sqlalchemy_session)
-
-    services = providers.Container(
-        ServicesContainer,
-        frontend_url=config.frontend_base_url,
-    )
+    services = providers.Container(ServicesContainer, frontend_url=config.frontend_base_url)
 
     security = providers.Container(
         Security,
