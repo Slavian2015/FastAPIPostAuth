@@ -20,7 +20,7 @@ def test_create_user_command_handler(
         app_container: AppContainer
 ) -> None:
     repository = MagicMock(spec=UsersRepositoryInterface)
-    handler = CreateUserCommandHandler(repository, MagicMock(), MagicMock())
+    handler = CreateUserCommandHandler(repository, MagicMock())
 
     with app_container.repositories.users.override(MagicMock()):
         handler.handle(registration_command)
@@ -34,7 +34,7 @@ def test_existing_user_raise_exception(
     repository = MagicMock(spec=UsersRepositoryInterface)
     repository.create_user.side_effect = UserExistsError
 
-    handler = CreateUserCommandHandler(repository, MagicMock(), MagicMock())
+    handler = CreateUserCommandHandler(repository, MagicMock())
     with pytest.raises(DomainError) as e:
         with app_container.repositories.users.override(MagicMock()):
             handler.handle(registration_command)

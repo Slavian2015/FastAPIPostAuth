@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from dependency_injector.wiring import Provide
 from dependency_injector.wiring import inject
 from fastapi import APIRouter
@@ -39,8 +37,8 @@ def create_user(
 @router.delete('/users/{user_id}', response_model=DeleteUserResponse)
 @inject
 def delete_user(
-        user_id: UUID,
-        current_user_id: UUID = Depends(get_user_id_from_token),
+        user_id: str,
+        current_user_id: str = Depends(get_user_id_from_token),
         handler: CommandHandlerInterface[DeleteUserCommand, None] =
         Depends(Provide[AppContainer.handlers.delete_user])
 ) -> DeleteUserResponse:
@@ -54,7 +52,7 @@ def delete_user(
 @router.get('/users/me', response_model=GetUserDetailsResponse)
 @inject
 def get_me(
-        user_id: UUID = Depends(get_user_id_from_token),
+        user_id: str = Depends(get_user_id_from_token),
         handler: QueryHandlerInterface[GetUserDetailsQuery, GetUserDetailsResponse] =
         Depends(Provide[AppContainer.handlers.get_me])
 ) -> GetUserDetailsResponse:

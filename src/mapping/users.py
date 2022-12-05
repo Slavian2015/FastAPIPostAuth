@@ -9,7 +9,6 @@ from src.mapping import PublicMetadata
 from sqlalchemy.orm import registry
 from sqlalchemy.types import CHAR
 
-
 UsersTable = Table(
     'users', PublicMetadata,
     Column('id', CHAR(32), primary_key=True, index=True),
@@ -24,6 +23,5 @@ UsersTable = Table(
 
 
 def perform_mapping() -> None:
-
     mapper_registry = registry()
     mapper_registry.map_imperatively(User, UsersTable)

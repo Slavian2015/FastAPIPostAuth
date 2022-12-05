@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from datetime import datetime
 from typing import Optional
-from uuid import UUID
 
 from pydantic import BaseModel
 
@@ -18,7 +17,7 @@ class DeleteUserResponse(BaseModel):
 
 
 class GetUserDetailsResponse(BaseModel):
-    id: UUID
+    id: str
     email: str
     date_created: datetime
     date_updated: Optional[datetime]
@@ -35,3 +34,12 @@ class GetUserDetailsResponse(BaseModel):
             date_deleted=user.date_deleted,
             date_logged=user.date_logged,
         )
+
+
+class GetUserCardResponse(BaseModel):
+    id: str
+    email: str
+
+    @staticmethod
+    def from_data(user: User) -> GetUserCardResponse:
+        return GetUserCardResponse(id=user.id, email=user.email)

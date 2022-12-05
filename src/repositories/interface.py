@@ -7,6 +7,7 @@ from typing import Optional
 from typing import Protocol
 from typing import Type
 
+from src.domain.posts import Post
 from src.domain.users import User
 
 
@@ -37,6 +38,25 @@ class UsersRepositoryInterface(AutocommitInterface):
 
     @abstractmethod
     def get_user_by_email(self, email: str) -> User:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_user_by_id(self, user_id: str) -> User:
+        raise NotImplementedError
+
+
+class PostsRepositoryInterface(AutocommitInterface):
+
+    @abstractmethod
+    def create_post(self, post: Post) -> str:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_post_by_title(self, title: str) -> Post:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_post_by_id(self, post_id: str) -> Post:
         raise NotImplementedError
 
     @abstractmethod

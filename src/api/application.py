@@ -14,6 +14,7 @@ from src.api.error_handlers import http409_error_handler
 from src.api.error_handlers import http422_error_handler
 from src.api.error_handlers import http403_error_handler
 import src.api.users.router as users_endpoints
+import src.api.posts.router as posts_endpoints
 import src.api.auth.router as auth_endpoints
 from src.container import AppContainer
 from src.mapping import perform_mapping
@@ -65,3 +66,4 @@ api.add_exception_handler(RequireValidationError, http403_error_handler)
 
 api.include_router(auth_endpoints.router, tags=['auth'])
 api.include_router(users_endpoints.router, tags=['users'])
+api.include_router(posts_endpoints.router, tags=['posts'])
