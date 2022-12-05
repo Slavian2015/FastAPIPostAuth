@@ -47,7 +47,7 @@ class PostTitle:
 
 class PostDescription:
     def __init__(self, description: str) -> None:
-        valid_name = r"^[a-zA-Z0-9-( )_]*$"
+        valid_name = r"^[a-zA-Z0-9-( )_.]*$"
         if not description:
             raise ValueError('Invalid post description')
         if not re.match(valid_name, description):

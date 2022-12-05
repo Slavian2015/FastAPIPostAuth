@@ -39,3 +39,55 @@ def test_create_new_post(
 
         list(map(s.delete, [post, user]))
         s.commit()
+
+
+def test_like_post(
+        session_factory: sessionmaker,
+        api_client: TestClient,
+        post_factory: Callable[..., Post],
+        authorization_hash_factory: Callable[..., str],
+        faker: Faker
+) -> None:
+    with session_factory() as s:
+        post = post_factory()
+        s.add(post)
+        s.commit()
+
+        response = api_client.patch(f'/posts/like/{post.id}',
+                                    headers={'Authorization': 'bearer %s' % authorization_hash_factory(post.author)})
+
+        assert response.status_code == 200
+        s.refresh(post)
+
+        assert len(post.post_likes) == 1
+        assert post.post_likes[0].user.id == post.author.id
+
+        list(map(s.delete, [post.post_likes[0], post, post.author]))
+        s.commit()
+
+
+def test_unlike_post(
+        session_factory: sessionmaker,
+        api_client: TestClient,
+        post_factory: Callable[..., Post],
+        authorization_hash_factory: Callable[..., str],
+        faker: Faker
+) -> None:
+    with session_factory() as s:
+        post = post_factory()
+        post.add_like(post.author)
+        s.add(post)
+        s.commit()
+
+        assert len(post.post_likes) == 1
+
+        response = api_client.patch(f'/posts/unlike/{post.id}',
+                                    headers={'Authorization': 'bearer %s' % authorization_hash_factory(post.author)})
+
+        assert response.status_code == 200
+        s.refresh(post)
+
+        assert len(post.post_likes) == 0
+
+        list(map(s.delete, [post, post.author]))
+        s.commit()

@@ -7,6 +7,7 @@ from starlette.testclient import TestClient
 
 from src.api.application import api
 from src.container import AppContainer
+from src.domain.posts import Post
 from src.handlers.interface import AuthTokenInterface
 
 import pytest
@@ -14,7 +15,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
 from src.api.application import container
 from src.domain.users import User
-from src.value_object.value_object import Email
+from src.value_object.value_object import Email, PostTitle, PostDescription
 from src.value_object.value_object import PlainPassword
 
 
@@ -65,4 +66,20 @@ def user_factory(faker: Faker) -> Callable[..., User]:
             hasher=CryptContext(schemes=['argon2']),
         )
         return user
+    return maker
+
+
+@pytest.fixture
+def post_factory(faker: Faker, user_factory: Callable[..., User]) -> Callable[..., Post]:
+    def maker(**kwargs: Any) -> Post:
+        user = kwargs.get("user", None)
+        if user is None:
+            user = user_factory()
+
+        post = Post(
+            author=user,
+            title=PostTitle(faker.word()),
+            description=PostDescription(faker.paragraph())
+        )
+        return post
     return maker

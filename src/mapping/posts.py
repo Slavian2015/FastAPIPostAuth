@@ -42,9 +42,9 @@ def perform_mapping() -> None:
         PostsTable,
         properties={
             'author': relationship(User),
-            'likes': relationship(PostLike,
-                                  cascade="all, delete-orphan",
-                                  back_populates="post"),
+            'post_likes': relationship(PostLike,
+                                       cascade="all, delete-orphan",
+                                       back_populates="post"),
         }
     )
 
