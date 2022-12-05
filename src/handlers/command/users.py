@@ -26,11 +26,9 @@ class CreateUserCommandHandler(CommandHandlerInterface):
             self,
             user_repository: UsersRepositoryInterface,
             security_context: CryptContext,
-            auth: AuthTokenInterface,
     ) -> None:
         self.user_repository = user_repository
         self.__security_context = security_context
-        self.__auth = auth
 
     def handle(self, command: CreateUserCommand) -> GetUserDetailsResponse:
         with self.user_repository.autocommit():

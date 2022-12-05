@@ -1,9 +1,35 @@
 from typing import Callable
 
+from faker import Faker
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import sessionmaker
 
 from src.domain.users import User
+
+
+def test_create_new_user(
+        session_factory: sessionmaker,
+        api_client: TestClient,
+        plaint_password: str,
+        faker: Faker
+) -> None:
+    with session_factory() as s:
+
+        payload: dict = {
+            "email": faker.email(),
+            "password":  plaint_password
+        }
+
+        response = api_client.post('/sign_up', json=payload)
+        assert response.status_code == 200
+        json = response.json()
+        assert 'id' in json.keys()
+        user = s.query(User).get(json['id'])
+        assert user is not None
+        assert user.email == payload["email"]
+
+        s.delete(user)
+        s.commit()
 
 
 def test_get_user_details(

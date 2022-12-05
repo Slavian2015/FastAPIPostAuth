@@ -3,6 +3,7 @@ from dependency_injector.containers import DeclarativeContainer
 from passlib.context import CryptContext
 
 from src.handlers.command.users import AuthorizeUserCommandHandler
+from src.handlers.command.users import CreateUserCommandHandler
 from src.handlers.command.users import DeleteUserCommandHandler
 from src.handlers.query.users import GetUserDetailsQueryHandler
 
@@ -20,8 +21,14 @@ class HandlersContainer(DeclarativeContainer):
         auth=security.auth_token
     )
 
+    create_user = providers.Factory(
+        CreateUserCommandHandler,
+        user_repository=repositories.users,
+        security_context=security_context
+    )
+
     get_me = providers.Factory(GetUserDetailsQueryHandler, user_repository=repositories.users)
-    delete_user = providers.Factory(DeleteUserCommandHandler, space_repository=repositories.users)
+    delete_user = providers.Factory(DeleteUserCommandHandler, user_repository=repositories.users)
 
     # get_users_list = providers.Factory(UsersListQueryHandler, user_repository=repositories.users)
     # get_posts_list = providers.Factory(PostsListQueryHandler, post_repository=repositories.posts)
