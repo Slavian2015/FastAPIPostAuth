@@ -9,6 +9,7 @@ from typing import Type
 
 from src.domain.posts import Post
 from src.domain.users import User
+from src.query.analytics import GetAnalyticsQuery
 
 
 class AutocommitInterface(Protocol):
@@ -61,4 +62,19 @@ class PostsRepositoryInterface(AutocommitInterface):
 
     @abstractmethod
     def get_user_by_id(self, user_id: str) -> User:
+        raise NotImplementedError
+
+
+class AnalyticsRepositoryInterface(AutocommitInterface):
+
+    @abstractmethod
+    def get_post_by_id(self, post_id: str) -> Post:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_user_by_id(self, user_id: str) -> User:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_analytics_by_filter(self, query: GetAnalyticsQuery) -> dict:
         raise NotImplementedError

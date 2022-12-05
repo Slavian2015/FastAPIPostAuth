@@ -4,6 +4,7 @@ from sqlalchemy.orm.scoping import ScopedSession
 
 from src.repositories.posts import PostsRepository
 from src.repositories.users import UsersRepository
+from src.repositories.analytics import AnalyticsRepository
 
 
 class RepositoriesContainer(DeclarativeContainer):
@@ -11,3 +12,4 @@ class RepositoriesContainer(DeclarativeContainer):
 
     users = providers.Factory(UsersRepository, session=sqlalchemy_session)
     posts = providers.Factory(PostsRepository, session=sqlalchemy_session)
+    analytics = providers.Factory(AnalyticsRepository, session=sqlalchemy_session)

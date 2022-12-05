@@ -8,6 +8,7 @@ from src.handlers.command.posts import UnLikePostCommandHandler
 from src.handlers.command.users import AuthorizeUserCommandHandler
 from src.handlers.command.users import CreateUserCommandHandler
 from src.handlers.command.users import DeleteUserCommandHandler
+from src.handlers.query.analytics import GetAnalyticsQueryHandler
 from src.handlers.query.users import GetUserDetailsQueryHandler
 
 
@@ -37,5 +38,6 @@ class HandlersContainer(DeclarativeContainer):
     like_post = providers.Factory(LikePostCommandHandler, post_repository=repositories.posts)
     unlike_post = providers.Factory(UnLikePostCommandHandler, post_repository=repositories.posts)
 
+    get_analytics = providers.Factory(GetAnalyticsQueryHandler, analytic_repository=repositories.analytics)
+
     # get_users_list = providers.Factory(UsersListQueryHandler, user_repository=repositories.users)
-    # get_posts_list = providers.Factory(PostsListQueryHandler, post_repository=repositories.posts)
