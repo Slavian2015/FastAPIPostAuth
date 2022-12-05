@@ -74,7 +74,7 @@ class AuthorizeUserCommandHandler(CommandHandlerInterface):
         with self.user_repository.autocommit():
             try:
                 user: User = self.user_repository.get_user_by_email(command.email)
-
+                user.update_logged_date()
                 if not user.authorize(command.plain_password):
                     raise AuthorizationError('login or password is invalid')
                 token = self.__get_auth_token(user)

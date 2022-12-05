@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker
 
 from src.domain.posts import Post
 from src.domain.posts import PostLike
+from src.domain.users import User
 
 
 def test_get_analytics(
@@ -135,4 +136,32 @@ def test_get_analytics_out_of_range(
         assert uploaded_data["likes"][0]["qty"] == 2
 
         list(map(s.delete, [post, post.author]))
+        s.commit()
+
+
+def test_get_user_activity(
+        session_factory: sessionmaker,
+        api_client: TestClient,
+        user_factory: Callable[..., User],
+        authorization_hash_factory: Callable[..., str],
+        plaint_password: str
+) -> None:
+    with session_factory() as s:
+        user = user_factory()
+        user2 = user_factory()
+
+        user.date_updated = datetime.datetime(year=2019, month=1, day=30)
+        user2.date_updated = datetime.datetime(year=2020, month=1, day=30)
+
+        s.add_all([user, user2])
+        s.commit()
+
+        response = api_client.get(f'/analytics/activity/{user.id}')
+
+        assert response.status_code == 200
+        uploaded_data = response.json()
+        assert uploaded_data["last_login"] == str(user.date_logged.date())
+        assert uploaded_data["last_request"] == str(user.date_updated.date())
+        s.delete(user)
+        s.delete(user2)
         s.commit()

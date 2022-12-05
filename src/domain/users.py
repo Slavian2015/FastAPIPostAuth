@@ -56,5 +56,8 @@ class User:
     def update_logged_date(self) -> None:
         self.date_logged = datetime.now()
 
+    def update_last_request(self) -> None:
+        self.date_updated = datetime.now()
+
     def delete_user(self) -> None:
         self.date_deleted = datetime.now()
