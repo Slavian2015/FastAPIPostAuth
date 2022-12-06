@@ -22,6 +22,10 @@ class Post:
         self.date_updated: Optional[datetime] = None
         self.date_deleted: Optional[datetime] = None
         self.post_likes: list[PostLike] = []
+        self.add_user_activity()
+
+    def add_user_activity(self) -> None:
+        self.author.update_last_request()
 
     def add_like(self, user: User) -> None:
         self.post_likes.append(PostLike(user, self))
