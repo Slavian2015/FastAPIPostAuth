@@ -84,3 +84,11 @@ All tests should pass successfully to consider setup is finished and works
 ```bash
 $ uvicorn src.api.application:api --host=localhost --port=8080
 ```
+
+### Create DB test data
+
+1. Run python bot
+
+```bash
+$ python3 demo_db/bot.py
+```
