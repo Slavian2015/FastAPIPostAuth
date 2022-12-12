@@ -1,4 +1,5 @@
-from typing import Callable, Any
+from typing import Callable
+from typing import Any
 from typing import Generator
 
 from faker import Faker
@@ -15,7 +16,9 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
 from src.api.application import container
 from src.domain.users import User
-from src.value_object.value_object import Email, PostTitle, PostDescription
+from src.value_object.value_object import Email
+from src.value_object.value_object import PostTitle
+from src.value_object.value_object import PostDescription
 from src.value_object.value_object import PlainPassword
 
 

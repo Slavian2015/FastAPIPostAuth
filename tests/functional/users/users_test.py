@@ -17,7 +17,7 @@ def test_create_new_user(
 
         payload: dict = {
             "email": faker.email(),
-            "password":  plaint_password
+            "password": plaint_password
         }
 
         response = api_client.post('/sign_up', json=payload)

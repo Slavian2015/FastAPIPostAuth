@@ -41,5 +41,3 @@ class HandlersContainer(DeclarativeContainer):
 
     get_analytics = providers.Factory(GetAnalyticsQueryHandler, analytic_repository=repositories.analytics)
     get_user_activity = providers.Factory(GetActivityQueryHandler, analytic_repository=repositories.analytics)
-
-    # get_users_list = providers.Factory(UsersListQueryHandler, user_repository=repositories.users)

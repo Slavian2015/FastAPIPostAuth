@@ -31,8 +31,8 @@ jobs:
   unit_tests:
     runs-on: ubuntu-latest
     env:
-      AUTH_SECRET: "s3cr3t"
-      AUTH_TOKEN_TTL: 14400
+      AUTH_SECRET: "222qwe"
+      AUTH_TOKEN_TTL: 86400
       AUTH_ALGORITHM: "HS256"
     steps:
       - uses: actions/checkout@v2
@@ -58,8 +58,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SQLITE_DSN: "sqlite:///sqlite3.db"
-      AUTH_SECRET: "s3cr3t"
-      AUTH_TOKEN_TTL: 14400
+      AUTH_SECRET: "222qwe"
+      AUTH_TOKEN_TTL: 86400
       AUTH_ALGORITHM: "HS256"
     steps:
       - uses: actions/checkout@v2
@@ -101,29 +101,4 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Run flake8 linter
-        run: flake8 src tests
-
-  deploy_dev:
-    needs: [static_analyze, linter, unit_tests, functional_tests]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v2
-      - name: Upload application and restart related service
-        run: |
-          eval $(ssh-agent -s)
-          echo "${{ secrets.DEVDEPLOYMENTKEY }}" | tr -d '\r' | ssh-add -
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          ssh-keyscan ${{ secrets.DEVDEPLOYMENTHOST }} >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
-          rsync -a --chmod=D2775,F664 --exclude=.git* --exclude=tests --exclude=README.md "$GITHUB_WORKSPACE"/ ${{ secrets.DEVDEPLOYMENTUSER }}@${{ secrets.DEVDEPLOYMENTHOST }}:${{ secrets.DEV_API_PATH }}
-          ssh ${{ secrets.DEVDEPLOYMENTUSER }}@${{ secrets.DEVDEPLOYMENTHOST }} "
-          cd ${{ secrets.DEV_API_PATH }}
-          echo '${{ secrets.DEV_ENV }}' > ${{ secrets.DEV_API_PATH }}/.env
-          rm -rf ${{ secrets.DEV_API_PATH }}/venv
-          python3.10 -m venv ${{ secrets.DEV_API_PATH }}/venv
-          source ${{ secrets.DEV_API_PATH }}/venv/bin/activate
-          ${{ secrets.DEV_API_PATH }}/venv/bin/pip install -r ${{ secrets.DEV_API_PATH }}/requirements.txt
-          ${{ secrets.DEV_API_PATH }}/venv/bin/alembic -c ${{ secrets.DEV_API_PATH }}/alembic.ini upgrade head
-          sudo /bin/systemctl restart mnk.service"
+        run: flake8 --ignore=W291 src tests demo_db

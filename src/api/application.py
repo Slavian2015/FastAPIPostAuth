@@ -28,7 +28,6 @@ container = AppContainer()
 container.config.sqlite_dsn.from_env('SQLITE_DSN')
 
 container.config.base_dir.from_value(BASE_PATH)
-container.config.frontend_base_url.from_env('FRONTEND_BASE_URL', default='')
 
 # Authorization
 container.config.password_reset_token_expire.from_env('PASSWORD_RESET_TOKEN_EXPIRE', default=3600)

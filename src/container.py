@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-from smtplib import SMTP
 from typing import Generator
 from typing import Callable
 
@@ -23,14 +22,6 @@ def database_engine(dsn: str) -> Generator:
     engine = create_engine(db_url)
     yield engine
     engine.dispose()
-
-
-def authorized_smtp_client(host: str, port: int, user: str, password: str) -> Generator:
-    client = SMTP(host, port)
-    if len(user) > 0:
-        client.login(user, password)
-    yield client
-    client.quit()
 
 
 class AppContainer(DeclarativeContainer):

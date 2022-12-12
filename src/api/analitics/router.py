@@ -6,10 +6,12 @@ from fastapi import Depends
 from starlette import status
 
 from src.api.analitics.request import GetAnalyticsRequest
-from src.api.analitics.response import GetAnalyticsDetailsResponse, GetActivityDetailsResponse
+from src.api.analitics.response import GetAnalyticsDetailsResponse
+from src.api.analitics.response import GetActivityDetailsResponse
 from src.container import AppContainer
 from src.handlers.interface import QueryHandlerInterface
-from src.query.analytics import GetAnalyticsQuery, GetActivityQuery
+from src.query.analytics import GetAnalyticsQuery
+from src.query.analytics import GetActivityQuery
 from src.repositories.errors import PersistenceError
 
 router = APIRouter()

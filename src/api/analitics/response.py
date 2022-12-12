@@ -16,5 +16,5 @@ class GetAnalyticsDetailsResponse(BaseModel):
 
 
 class GetActivityDetailsResponse(BaseModel):
-    last_login:  datetime.date
-    last_request:  Optional[datetime.date]
+    last_login: datetime.date
+    last_request: Optional[datetime.date]

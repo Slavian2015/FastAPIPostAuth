@@ -50,10 +50,10 @@ def sign_up_users(faker: Faker) -> None:
         try:
             record_list: list[tuple] = []
             sqlite_insert_query = """
-                    INSERT INTO users 
-                    (id, email, password, verification_token, date_created, date_updated, date_deleted, date_logged) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-                    """
+                        INSERT INTO users 
+                        (id, email, password, verification_token, date_created, date_updated, date_deleted, date_logged) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+                        """
 
             if NUMBER_OF_USERS is None:
                 logging.error("NUMBER_OF_USERS in config file is empty")
